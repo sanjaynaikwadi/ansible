@@ -9,7 +9,7 @@ Configuration management in terms of Ansible means that it maintains configurati
 ### How Ansible Works
 Ansible works by connecting to your nodes and pushing out small programs, called "Ansible modules" to them. Ansible then executes these modules (over SSH by default), and removes them when finished.
 
-[WorkFlow](https://github.com/sanjaynaikwadi/ansible/blob/master/AutoScaling/HPA/HPA.png)
+[WorkFlow](https://github.com/sanjaynaikwadi/ansible/tree/master/ansible-aws-demo/Ansible_How_it_Works.png)
 
 ### Installation Process
 Mainly, there are two types of machines when we talk about deployment −
@@ -21,7 +21,7 @@ Mainly, there are two types of machines when we talk about deployment −
 ### Lets get started
 - spin three nodes on AWS (I am using Ubuntu 16.4 machines for demo purpose), one will be your control node and other nodes we will use to deploy the softwares.
 
-### Install via PIP
+### Install Ansible via PIP
 Login to one of your node and run the below command
 ```bash
 sudo apt-get update
@@ -30,6 +30,17 @@ sudo pip install ansible
 
 ansible --version
 ```
+
+### Things to remember
+	- Inventory - List of hosts, there can be multiple inventory files.
+	- Playbooks - Playbooks contain the steps which the user wants to execute on a particular machine. Playbooks are run sequentially.
+	- Tasks - What task needs to be done
+	- Handlers - What needs to be when task completes
+	- Templates - Templates are simple text files that we can use in Ansible. J2 is extension of Jinja2 templating language that Ansible is using.
+	- Variables - Variable in playbooks are very similar to using variables in any programming language.  
+	- Roles - Roles are not playbooks. Roles are small functionality which can be independently used but have to be used within playbooks
+
+
 
 
 

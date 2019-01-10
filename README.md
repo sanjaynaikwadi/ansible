@@ -9,7 +9,7 @@ Configuration management in terms of Ansible means that it maintains configurati
 ### How Ansible Works
 Ansible works by connecting to your nodes and pushing out small programs, called "Ansible modules" to them. Ansible then executes these modules (over SSH by default), and removes them when finished.
 
-![WorkFlow](https://github.com/sanjaynaikwadi/ansible/blob/master/ansible-aws-demo/Ansible_How_it_Works.png)
+![WorkFlow](https://github.com/sanjaynaikwadi/ansible/blob/master/Ansible_How_it_Works.png)
 
 ### Installation Process
 Mainly, there are two types of machines when we talk about deployment −

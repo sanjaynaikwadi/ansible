@@ -32,15 +32,85 @@ ansible --version
 ```
 
 ### Things to remember
-	- Inventory - List of hosts, there can be multiple inventory files.
-	- Playbooks - Playbooks contain the steps which the user wants to execute on a particular machine. Playbooks are run sequentially.
-	- Tasks - What task needs to be done
-	- Handlers - What needs to be when task completes
-	- Templates - Templates are simple text files that we can use in Ansible. J2 is extension of Jinja2 templating language that Ansible is using.
-	- Variables - Variable in playbooks are very similar to using variables in any programming language.  
-	- Roles - Roles are not playbooks. Roles are small functionality which can be independently used but have to be used within playbooks
+	* Inventory - List of hosts, there can be multiple inventory files.
+	* Playbooks - Playbooks contain the steps which the user wants to execute on a particular machine. Playbooks are run sequentially.
+	* Tasks - What task needs to be done
+	* Handlers - What needs to be when task completes
+	* Templates - Templates are simple text files that we can use in Ansible. J2 is extension of Jinja2 templating language that Ansible is using.
+	* Variables - Variable in playbooks are very similar to using variables in any programming language.  
+	* Roles - Roles are not playbooks. Roles are small functionality which can be independently used but have to be used within playbooks
 
+### Lets test the conectivity from control machine to nodes
+- Dump you key in one of the location to connect to nodes
+- Default user used is ubuntu
 
+Login to your control node and create the inventory file and ansible.cfg file, add your ipaddress of nodes 
+```bash
+ubuntu@ip-172-31-89-135:~$ mkdir ansible-demo/
+cd ansible-demo
 
+vi inventory.ini
+[control]
+127.0.0.1 ansible_connection=local
 
+[web]
+172.31.80.9
+
+[db]
+172.31.94.179
+
+```
+Lets now try a ping command and see the result
+
+```
+ubuntu@ip-172-31-89-135:~/ansible-demo$ ansible -m ping all  -i inventory.ini
+172.31.94.179 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Permission denied (publickey).\r\n",
+    "unreachable": true
+}
+172.31.80.9 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Permission denied (publickey).\r\n",
+    "unreachable": true
+}
+127.0.0.1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+```
+
+Ohhhh .... got the error .... yes as its aws where you need to specify the key file to connect to remote nodes, lets now add one file and mention all details below
+
+```
+ubuntu@ip-172-31-89-135:~/ansible-demo$ mkdir group_vars/
+cd group_vars/
+
+vi all
+
+ansible_connection: ssh
+ansible_ssh_private_key_file: /home/ubuntu/ansible-demo/devops.pem
+ansible_user: ubuntu
+ansible_python_interpreter: /usr/bin/python3
+
+```
+save the file and re-run the command from going back in demo directory 
+
+```bash
+ubuntu@ip-172-31-89-135:~/ansible-demo$ ansible -m ping all -i inventory.ini
+127.0.0.1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+172.31.80.9 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+172.31.94.179 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+```
+
+HOLAAA .... Connectivity is working and now you can create playbooks and play with it.
 

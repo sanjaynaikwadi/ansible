@@ -17,3 +17,7 @@ Basically Playbooks consists of three sections,
 - Roles are set of tasks and additional files for a certain role which allow you to break up the configurations.
 - It can be easily reuse the codes by anyone if the role is suitable to someone.
 - It can be easily modify and will reduce the syntax errors
+
+### Facts
+Ansible facts are a way of getting data about remote systems for use in playbook variables. Usually these are discovered automatically by the setup module in Ansible.
+If your not using any variables this can be turned off to run the playbook faster.

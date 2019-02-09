@@ -26,8 +26,10 @@ localhost
 
 ### Create a file to launch ec2 instances
 
-<details> 
-```
+<details><summary>show</summary>
+<p>
+
+```YAML
 ---
   - name: Provision an EC2 Instance
     hosts: local
@@ -103,7 +105,9 @@ localhost
             Name: webserver
 
 ```
-<details>
+
+</p>
+</details>
 
 
 

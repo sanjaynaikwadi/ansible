@@ -152,3 +152,42 @@ localhost                  : ok=5    changed=3    unreachable=0    failed=0
 ```
 
 #### Hola your ec2-instance is ready NOW !!!
+
+
+## Destroy you Setup !!! < Do not do this in Production > 
+This will help you to tear down your test setup which you created for testing.
+
+<details><summary>show</summary>
+<p>
+
+This will match the TAG set as Name:webserver and terminate those instances.
+
+```YAML
+---
+
+- hosts: local
+  connection: local
+  vars:
+    region: us-east-1
+  tasks:
+    - name: Gather EC2 facts
+      ec2_instance_facts:
+        region: "{{ region }}"
+        filters:
+          "tag:Name": "webserver"
+      register: ec2
+    - debug: var=ec2
+
+    - name: Terminate EC2 Instance(s)
+      ec2:
+        instance_ids: '{{ item.instance_id }}'
+        state: absent
+        region: "{{ region }}"
+      with_items: "{{ ec2.instances }}"
+
+```
+
+</p>
+</details>
+
+

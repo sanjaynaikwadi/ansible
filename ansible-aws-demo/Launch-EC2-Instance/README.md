@@ -5,14 +5,20 @@
 - Boto will hold the Access Key and Secret Key details, which is required by Ansible
 
 ### Let create a boto file
-```
+
+```bash
+vim ~/.boto
+
 [Credentials]
 aws_access_key_id = YOUR ACCESS KEY
 aws_secret_access_key = YOUR SECRET KEY
 ```
 
 ### Lets create inventory file
-```
+This will be needed for Ansible to read the inventory file while launching the ec2-instances, also a new server which will be launched under
+group name called `webserver`.
+
+```bash
 vim hosts
 
 [local]
@@ -23,8 +29,10 @@ localhost
 ```
 
 ### Make sure you have your private key file in same directory to make SSH connection
+I am using key name as devops-ansible, this key name might be different in your enviornment.
 
 ### Create a file to launch ec2 instances
+Sample code where you can launch t2.micro instance of Ubuntu. 
 
 <details><summary>show</summary>
 <p>
@@ -110,4 +118,37 @@ localhost
 </details>
 
 
+### Let run the playbook
 
+```bash
+ansible-playbook -i hosts ec2_launch.yml
+
+```
+
+You will see the output something like this, and you can verify the public ip would be added in your host file
+
+```bash
+
+PLAY [Provision an EC2 Instance] ****************************************************************************************************************************
+
+TASK [Create a security group] ******************************************************************************************************************************
+ok: [localhost -> localhost]
+
+TASK [Launch the new EC2 Instance] **************************************************************************************************************************
+changed: [localhost -> localhost]
+
+TASK [Add the newly created EC2 instance(s) to the local host group (located inside the directory)] *********************************************************
+changed: [localhost -> localhost] => (item={u'ramdisk': None, u'kernel': None, u'root_device_type': u'ebs', u'private_dns_name': u'ip-172-31-87-188.ec2.internal', u'block_device_mapping': {u'/dev/sda1': {u'status': u'attached', u'delete_on_termination': False, u'volume_id': u'vol-053f496491bfe5f37'}}, u'key_name': u'devops-ansible', u'public_ip': u'3.85.47.231', u'image_id': u'ami-0f9cf087c1f27d9b1', u'tenancy': u'default', u'private_ip': u'172.31.87.188', u'groups': {u'sg-0e40ed94232568846': u'webserver'}, u'public_dns_name': u'ec2-3-85-47-231.compute-1.amazonaws.com', u'state_code': 16, u'id': u'i-06e6b76acb57407a3', u'tags': {}, u'placement': u'us-east-1d', u'ami_launch_index': u'0', u'dns_name': u'ec2-3-85-47-231.compute-1.amazonaws.com', u'region': u'us-east-1', u'ebs_optimized': False, u'launch_time': u'2019-02-09T12:22:59.000Z', u'instance_type': u't2.micro', u'state': u'running', u'architecture': u'x86_64', u'hypervisor': u'xen', u'virtualization_type': u'hvm', u'root_device_name': u'/dev/sda1'})
+
+TASK [Wait for SSH to come up] ******************************************************************************************************************************
+ok: [localhost -> localhost] => (item={u'ramdisk': None, u'kernel': None, u'root_device_type': u'ebs', u'private_dns_name': u'ip-172-31-87-188.ec2.internal', u'block_device_mapping': {u'/dev/sda1': {u'status': u'attached', u'delete_on_termination': False, u'volume_id': u'vol-053f496491bfe5f37'}}, u'key_name': u'devops-ansible', u'public_ip': u'3.85.47.231', u'image_id': u'ami-0f9cf087c1f27d9b1', u'tenancy': u'default', u'private_ip': u'172.31.87.188', u'groups': {u'sg-0e40ed94232568846': u'webserver'}, u'public_dns_name': u'ec2-3-85-47-231.compute-1.amazonaws.com', u'state_code': 16, u'id': u'i-06e6b76acb57407a3', u'tags': {}, u'placement': u'us-east-1d', u'ami_launch_index': u'0', u'dns_name': u'ec2-3-85-47-231.compute-1.amazonaws.com', u'region': u'us-east-1', u'ebs_optimized': False, u'launch_time': u'2019-02-09T12:22:59.000Z', u'instance_type': u't2.micro', u'state': u'running', u'architecture': u'x86_64', u'hypervisor': u'xen', u'virtualization_type': u'hvm', u'root_device_name': u'/dev/sda1'})
+
+TASK [Add tag to Instance(s)] *******************************************************************************************************************************
+changed: [localhost -> localhost] => (item={u'ramdisk': None, u'kernel': None, u'root_device_type': u'ebs', u'private_dns_name': u'ip-172-31-87-188.ec2.internal', u'block_device_mapping': {u'/dev/sda1': {u'status': u'attached', u'delete_on_termination': False, u'volume_id': u'vol-053f496491bfe5f37'}}, u'key_name': u'devops-ansible', u'public_ip': u'3.85.47.231', u'image_id': u'ami-0f9cf087c1f27d9b1', u'tenancy': u'default', u'private_ip': u'172.31.87.188', u'groups': {u'sg-0e40ed94232568846': u'webserver'}, u'public_dns_name': u'ec2-3-85-47-231.compute-1.amazonaws.com', u'state_code': 16, u'id': u'i-06e6b76acb57407a3', u'tags': {}, u'placement': u'us-east-1d', u'ami_launch_index': u'0', u'dns_name': u'ec2-3-85-47-231.compute-1.amazonaws.com', u'region': u'us-east-1', u'ebs_optimized': False, u'launch_time': u'2019-02-09T12:22:59.000Z', u'instance_type': u't2.micro', u'state': u'running', u'architecture': u'x86_64', u'hypervisor': u'xen', u'virtualization_type': u'hvm', u'root_device_name': u'/dev/sda1'})
+
+PLAY RECAP **************************************************************************************************************************************************
+localhost                  : ok=5    changed=3    unreachable=0    failed=0
+
+```
+
+#### Hola your ec2-instance is ready NOW !!!

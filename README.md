@@ -62,7 +62,7 @@ vi inventory.ini
 ```
 Lets now try a ping command and see the result
 
-```
+```bash
 ubuntu@ip-172-31-89-135:~/ansible-demo$ ansible -m ping all  -i inventory.ini
 172.31.94.179 | UNREACHABLE! => {
     "changed": false,
@@ -114,3 +114,4 @@ ubuntu@ip-172-31-89-135:~/ansible-demo$ ansible -m ping all -i inventory.ini
 
 HOLAAA .... Connectivity is working and now you can create playbooks and play with it.
 
+## Check the examples in ansible-demo directory
